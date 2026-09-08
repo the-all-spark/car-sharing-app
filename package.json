@@ -1,0 +1,21 @@
+{
+  "name": "car-sharing-api",
+  "version": "1.0.0",
+  "description": "Car sharing service REST API with Express, MongoDB, Mongoose, Swagger, and Docker",
+  "main": "src/index.js",
+  "private": true,
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "npx nodemon -L src/index.js",
+    "seed": "node src/seed/seed.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.5.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
