@@ -93,7 +93,7 @@ exports.setInServiceOldOrHighMileage = async (req, res) => {
   try {
     const result = await Car.updateMany(
       {
-        docType: { $eq: 'Vehicle' } , 
+        docType: 'Vehicle' , 
         $or: [
           { 'productionInfo.date': { $lt: new Date('2017-01-01T00:00:00.000Z') } },
           { mileage: { $gt: 100000 } }
@@ -125,7 +125,7 @@ exports.relocateFrequentBookers = async (req, res) => {
   try {
     const result = await Car.updateMany(
       {
-        docType: { $eq: 'Vehicle' } , 
+        docType: 'Vehicle', 
         'bookingsHistory.2': { $exists: true },
         status: { $nin: ['In use', 'Reserved'] },
       },

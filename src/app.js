@@ -19,12 +19,12 @@ app.get('/', (req, res) => {
     message: 'Car Sharing API',
     docs: '/api-docs',
     endpoints: {
-      lowFuelCars: 'GET /api/cars/in-use/low-fuel',
-      reservedUnauthorized: 'GET /api/cars/reserved/unauthorized-card',
+      getCarsInUseLowFuel: 'GET /api/cars/in-use/low-fuel',
+      getReservedUnauthorizedCard: 'GET /api/cars/reserved/unauthorized-card',
       addCar: 'POST /api/cars',
-      setInService: 'PUT /api/cars/service-old-or-high-mileage',
-      relocateFrequent: 'PUT /api/cars/relocate-frequent',
-      deleteCar: 'DELETE /api/cars/:vin',
+      setInServiceOldOrHighMileage: 'PUT /api/cars/service-old-or-high-mileage',
+      relocateFrequentBookers: 'PUT /api/cars/relocate-frequent',
+      deleteCarByVin: 'DELETE /api/cars/:vin',
     },
   });
 });

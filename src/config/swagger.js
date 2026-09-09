@@ -87,7 +87,7 @@ const options = {
             },
           },
         },
-        // discriminator: car
+        // discriminator: Vehicle
         Vehicle: {
           allOf: [
             { $ref: '#/components/schemas/CarCollectionItem' },
@@ -143,7 +143,7 @@ const options = {
             },
           ],
         },
-        // discriminator: driver
+        // discriminator: Driver
         Driver: {
           allOf: [
             { $ref: '#/components/schemas/CarCollectionItem' },
