@@ -1,16 +1,13 @@
 // * API logic (Route Handlers)
 
-const Car = require('../models/Car');
+const Car = require('../models/car.model');
+const { getCarsInUseLowFuel } = require('../services/car.service')
 
 // * GET /api/cars/in-use/low-fuel
 // Cars currently in use with fuel level less than 1/4 of full tank
 exports.getCarsInUseLowFuel = async (req, res) => {
   try {
-    const cars = await Car.find({
-      docType: 'Vehicle',
-      status: 'In use',
-      fuelLevel: { $lt: 25 },
-    });
+    const cars = await getCarsInUseLowFuel(); 
 
     if (!cars || cars.length === 0) {
       return res.status(404).json({ message: 'No cars in use with low fuel level were found' });

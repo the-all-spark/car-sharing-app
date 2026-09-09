@@ -1,6 +1,9 @@
 // * Swagger configuration
 
 const swaggerJsdoc = require('swagger-jsdoc');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
@@ -13,7 +16,7 @@ const options = {
       description: 'REST API for a car sharing service vehicle park',
     },
     servers: [
-      { url: `http://localhost:${PORT}`, description: 'Local server' },
+      { url: `http://localhost:${PORT}/api`, description: 'Local server' },
     ],
     components: {
       schemas: {

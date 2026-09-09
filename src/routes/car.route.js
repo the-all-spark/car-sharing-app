@@ -2,11 +2,11 @@
 
 const express = require('express');
 const router = express.Router();
-const carController = require('../controllers/carController');
+const carController = require('../controllers/car.controller');
 
 /**
  * @swagger
- * /api/cars/in-use/low-fuel:
+ * /cars/in-use/low-fuel:
  *   get:
  *     summary: Get cars currently in use with fuel level less than 1/4 of full tank
  *     tags: [Cars]
@@ -36,7 +36,7 @@ router.get('/in-use/low-fuel', carController.getCarsInUseLowFuel);
 
 /**
  * @swagger
- * /api/cars/reserved/unauthorized-card:
+ * /cars/reserved/unauthorized-card:
  *   get:
  *     summary: Get reserved cars whose driver credit/debit card hasn't been authorized
  *     tags: [Cars]
@@ -83,7 +83,7 @@ router.get('/reserved/unauthorized-card', carController.getReservedUnauthorizedC
 
 /**
  * @swagger
- * /api/cars:
+ * /cars/add:
  *   post:
  *     summary: Add a new car to the car sharing park
  *     tags: [Cars]
@@ -107,7 +107,7 @@ router.post('/', carController.addCar);
 
 /**
  * @swagger
- * /api/cars/service-old-or-high-mileage:
+ * /cars/service-old-or-high-mileage:
  *   put:
  *     summary: Set status to In Service for vehicles produced before 01/01/2017 or with mileage > 100000 km
  *     tags: [Cars]
@@ -150,7 +150,7 @@ router.put('/service-old-or-high-mileage', carController.setInServiceOldOrHighMi
 
 /**
  * @swagger
- * /api/cars/relocate-frequent:
+ * /cars/relocate-frequent:
  *   put:
  *     summary: Relocate cars booked more than 2 times (not In use or Reserved) to Minsk coordinates
  *     tags: [Cars]
@@ -193,7 +193,7 @@ router.put('/relocate-frequent', carController.relocateFrequentBookers);
 
 /**
  * @swagger
- * /api/cars/{vin}:
+ * /cars/{vin}:
  *   delete:
  *     summary: Remove a car by its VIN number
  *     tags: [Cars]

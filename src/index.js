@@ -1,12 +1,39 @@
 const http = require('http');
-const app = require('./app');
 const connectDB = require('./config/db');
-const Car = require('./models/Car');
+
+const Car = require('./models/car.model');
+// ! другие модели
+
+const carRoutes = require('./routes/car.route');
+// ! другие маршруты
+
 const seedDatabase = require('./seed/seed');
 
-const PORT = process.env.PORT || 3000;
+const express = require('express');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
+
+const dotenv = require('dotenv');
+dotenv.config();
+
+// API configuration: routes, data parsing, automatic Swagger documentation
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use('/api/cars', carRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
+
+// Entry point
 const server = http.createServer(app);
+const PORT = process.env.PORT || 3000;
 
 async function start() {
   try {

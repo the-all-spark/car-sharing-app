@@ -1,6 +1,6 @@
 // * Filling database with initial data
 
-const Car = require('../models/Car');
+const Car = require('../models/car.model');
 
 async function seedDatabase() {
   try {

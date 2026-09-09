@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://mongo:27017/car-sharing';
+dotenv.config();
+
+const MONGODB_URI = process.env.MONGODB_URI || '';
 
 async function connectDB() {
   try {
