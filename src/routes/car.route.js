@@ -103,7 +103,7 @@ router.get('/reserved/unauthorized-card', carController.getReservedUnauthorizedC
  *       400:
  *         description: Invalid input
  */
-router.post('/', carController.addCar);
+router.post('/add', carController.addCar);
 
 /**
  * @swagger
