@@ -6,6 +6,43 @@ const carController = require('../controllers/car.controller');
 
 /**
  * @swagger
+ * /cars:
+ *   get:
+ *     summary: Get all cars
+ *     tags: [Cars]
+ *     responses:
+ *       200:
+ *         description: List of all cars
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 properties:
+ *                   amount:
+ *                     type: number
+ *                     example: 1
+ *                   cars:
+ *                     type: array
+ *                     items:
+ *                       $ref: '#/components/schemas/Car'
+ *       404:
+ *         description: Not Found (no cars were found)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal Server Error (e.g., database connection issues)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.get('/', carController.getCars);
+
+/**
+ * @swagger
  * /cars/in-use/low-fuel:
  *   get:
  *     summary: Get cars currently in use with fuel level less than 1/4 of full tank
@@ -104,6 +141,81 @@ router.get('/reserved/unauthorized-card', carController.getReservedUnauthorizedC
  *         description: Invalid input
  */
 router.post('/add', carController.addCar);
+
+/**
+ * @swagger
+ * /cars/update/{vin}:
+ *   patch:
+ *     summary: Update a car by its VIN number (Partial update)
+ *     tags: [Cars]
+ *     parameters:
+ *       - in: path
+ *         name: vin
+ *         required: true
+ *         schema:
+ *           type: string
+ *           minLength: 17
+ *           maxLength: 17
+ *           example: "6FNYF4900PB901234"
+ *         description: The 17-character Vehicle Identification Number (case-insensitive)
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Car'
+ *           example:
+ *             registrationNumber: ""
+ *             status: "Free"
+ *             fuelLevel: 100
+ *             mileage: 50000
+ *             location:
+ *               type: "Point"
+ *               coordinates: [27.5443, 53.8883]
+ *     responses:
+ *       200:
+ *         description: Car successfully updated. Returns the updated object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Car updated"
+ *                 car:
+ *                   $ref: '#/components/schemas/Car'
+ *       400:
+ *         description: Bad Request (e.g. trying to update read-only fields or invalid data)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Bad Request"
+ *       404:
+ *         description: Car not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Car not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+router.patch('/update/:vin', carController.updateCarByVin);
 
 /**
  * @swagger
@@ -222,7 +334,7 @@ router.put('/relocate-frequent', carController.relocateFrequentBookers);
  *                   type: object
  *                   description: The full document of the deleted car
  *       404:
- *         description: Car not found or the document is not a Vehicle
+ *         description: Car not found
  *         content:
  *           application/json:
  *             schema:

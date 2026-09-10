@@ -1,7 +1,10 @@
 const Car = require('../models/car.model');
 const Booking = require('../models/booking.model');
 
-// ! getCars
+// * Get all cars
+const getCars = async () => {
+  return await Car.find({});
+};
 
 // * Cars currently in use with fuel level less than 1/4 of full tank
 const getCarsInUseLowFuel = async () => {
@@ -69,7 +72,14 @@ const addCar = async (carData) => {
   return await car.save();
 }
 
-// ! updateCarByVin
+// * Update a car by VIN
+const updateCarByVin = async (carVin, carData) => {
+  return await Car.findOneAndUpdate(
+    { vin: carVin },
+    { $set: carData },
+    { new: true }
+  );
+}
 
 // * Set status to "In Service" for cars produced before 01/01/2017 OR mileage > 100000 km
 const setInServiceOldOrHighMileage = async () => {
@@ -154,10 +164,12 @@ const deleteCarByVin = async (carVin) => {
 }
 
 module.exports = {
+  getCars,
   getCarsInUseLowFuel,
   getReservedUnauthorizedCard,
   addCar,
+  updateCarByVin,
   setInServiceOldOrHighMileage,
   relocateFrequentBookers,
-  deleteCarByVin
+  deleteCarByVin,
 }

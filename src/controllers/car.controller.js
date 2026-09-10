@@ -1,13 +1,34 @@
 // *Route Handlers
 
 const { 
+  getCars,
   getCarsInUseLowFuel,
   getReservedUnauthorizedCard,
   addCar,
+  updateCarByVin,
   setInServiceOldOrHighMileage,
   relocateFrequentBookers,
   deleteCarByVin
 } = require('../services/car.service')
+
+// * GET /cars
+// Get all cars
+exports.getCars = async (req, res) => {
+  try {
+    const cars = await getCars();
+
+    if (!cars || cars.length === 0) {
+      return res.status(404).json({ message: 'No cars were found' });
+    }
+
+    res.status(200).json({
+      amount: cars.length,
+      cars: cars,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 // * GET /cars/in-use/low-fuel
 // Cars currently in use with fuel level less than 1/4 of full tank
@@ -51,6 +72,34 @@ exports.addCar = async (req, res) => {
     res.status(201).json(saved);
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+};
+
+// * PATCH /cars/update/:vin
+// Update a car by VIN
+exports.updateCarByVin = async (req, res) => {
+  try {
+    const carVin = req.params.vin.toUpperCase();
+    const { vin, currentBookingId, ...incomingData } = req.body; 
+
+    const carData = Object.fromEntries(
+      Object.entries(incomingData).filter(([_, value]) => {
+        return value !== "" && value !== null && value !== undefined;
+      })
+    );
+
+    if (Object.keys(carData).length === 0) {
+      return res.status(400).json({ message: 'No valid fields provided for update' });
+    }
+
+    const updated = await updateCarByVin(carVin, carData);
+    if (!updated) {
+      return res.status(404).json({ message: 'Car not found' });
+    }
+    
+    res.status(200).json({ message: 'Car updated', car: updated });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
