@@ -5,7 +5,7 @@ const Car = require('./models/car.model');
 
 const carRoutes = require('./routes/car.route');
 const driverRoutes = require('./routes/driver.route');
-// const bookingRoutes = require('./routes/booking.route');
+const bookingRoutes = require('./routes/booking.route');
 
 const seedDatabase = require('./seed/seed');
 
@@ -27,7 +27,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api/cars', carRoutes);
 app.use('/api/drivers', driverRoutes);
-// app.use('/api/bookings', bookingRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
