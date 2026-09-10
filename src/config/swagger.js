@@ -39,6 +39,16 @@ const options = {
             authorized: { type: 'boolean', default: false },
           },
         },
+        Driver: {
+          type: 'object',
+          required: ['licenseNumber', 'firstName', 'lastName', 'card'],
+          properties: {
+            licenseNumber: { type: 'string' },
+            firstName: { type: 'string' },
+            lastName: { type: 'string' },
+            card: { $ref: '#/components/schemas/Card' },
+          },
+        },
         ProductionInfo: {
           type: 'object',
           required: ['brand', 'model', 'date'],
@@ -48,119 +58,62 @@ const options = {
             date: { type: 'string', format: 'date-time' },
           },
         },
-        CurrentRun: {
+        Car: {
           type: 'object',
-          required: ['startDate', 'driverId', 'startFuelLevel', 'startMileage'],
+          required: ['vin', 'registrationNumber', 'productionInfo'],
           properties: {
-            startDate: { type: 'string', format: 'date-time' },
-            driverId: { type: 'string', description: 'ObjectId references to Driver (Car model)' },
-            startFuelLevel: { type: 'number', minimum: 0 },
-            startMileage: { type: 'number', minimum: 0 },
-          },
-        },
-        BookingHistory: {
-          type: 'object',
-          required: ['startDate', 'driverId', 'startFuelLevel', 'startMileage'],
-          properties: {
-            startDate: { type: 'string', format: 'date-time' },
-            driverId: { type: 'string', description: 'ObjectId references to Driver (Car model)' },
-            startFuelLevel: { type: 'number', minimum: 0 },
-            startMileage: { type: 'number', minimum: 0 },
-            finishFuelLevel: { type: 'number', nullable: true },
-            finishMileage: { type: 'number', nullable: true },
-          },
-        },
-        // Basic scheme for discriminator
-        CarCollectionItem: {
-          type: 'object',
-          required: ['docType'],
-          properties: {
-            _id: { type: 'string', description: 'MongoDB ObjectId', readOnly: true },
-            docType: {
+            vin: { 
+              type: 'string', 
+              minLength: 17, 
+              maxLength: 17, 
+              writeOnly: false,
+              example: '1HGCR2F8XHA000000', 
+              pattern: '^[A-HJ-NPR-Z0-9]{17}$',
+              description: 'VIN-code, consisted from 17 numbers'
+            },
+            registrationNumber: { type: 'string', example: 'A123AA77' },
+            productionInfo: { $ref: '#/components/schemas/ProductionInfo' },
+            status: {
               type: 'string',
-              enum: ['Vehicle', 'Driver'],
-              description: 'Discriminator key to distinguish between Vehicle and Driver documents',
+              enum: ['Free', 'Reserved', 'In use', 'Unavailable', 'In Service'],
+              default: 'Free',
             },
-          },
-          discriminator: {
-            propertyName: 'docType',
-            mapping: {
-              Vehicle: '#/components/schemas/Vehicle',
-              Driver: '#/components/schemas/Driver',
+            fuelLevel: { type: 'number', minimum: 0, maximum: 100, default: 100 },
+            mileage: { type: 'number', minimum: 0, default: 0 },
+            currentBookingId: { 
+              type: 'string', 
+              description: 'ObjectId references to Booking id (Booking model)',
+              nullable: true,
+              example: null
             },
-          },
-        },
-        // discriminator: Vehicle
-        Vehicle: {
-          allOf: [
-            { $ref: '#/components/schemas/CarCollectionItem' },
-            {
+            location: {
               type: 'object',
-              required: ['vin', 'registrationNumber', 'productionInfo'],
               properties: {
-                vin: { 
-                  type: 'string', 
-                  minLength: 17, 
-                  maxLength: 17, 
-                  writeOnly: false,
-                  example: '1HGCR2F8XHA000000', 
-                  pattern: '^[A-HJ-NPR-Z0-9]{17}$',
-                  description: 'VIN-code, consisted from 17 numbers'
-                },
-                registrationNumber: { type: 'string', example: 'A123AA77' },
-                productionInfo: { $ref: '#/components/schemas/ProductionInfo' },
-                status: {
-                  type: 'string',
-                  enum: ['Free', 'Reserved', 'In use', 'Unavailable', 'In Service'],
-                  default: 'Free',
-                },
-                fuelLevel: { type: 'number', minimum: 0, maximum: 100, default: 100 },
-                mileage: { type: 'number', minimum: 0, default: 0 },
-                currentRun: { 
-                  allOf: [
-                    { $ref: '#/components/schemas/CurrentRun' }
-                  ],
-                  nullable: true,
-                  readOnly: true 
-                },
-                location: {
-                  type: 'object',
-                  properties: {
-                    type: { type: 'string', enum: ['Point'] },
-                    coordinates: {
-                      type: 'array',
-                      items: { type: 'number' },
-                      minItems: 2,
-                      maxItems: 2,
-                      description: '[longitude, latitude]',
-                    },
-                  },
-                },
-                bookingsHistory: {
+                type: { type: 'string', enum: ['Point'] },
+                coordinates: {
                   type: 'array',
-                  items: { $ref: '#/components/schemas/BookingHistory' },
-                  default: [],
-                  readOnly: true
+                  items: { type: 'number' },
+                  minItems: 2,
+                  maxItems: 2,
+                  description: '[longitude, latitude]',
                 },
               },
             },
-          ],
+          },
         },
-        // discriminator: Driver
-        Driver: {
-          allOf: [
-            { $ref: '#/components/schemas/CarCollectionItem' },
-            {
-              type: 'object',
-              required: ['licenseNumber', 'firstName', 'lastName', 'card'],
-              properties: {
-                licenseNumber: { type: 'string' },
-                firstName: { type: 'string' },
-                lastName: { type: 'string' },
-                card: { $ref: '#/components/schemas/Card' },
-              },
-            },
-          ],
+        Booking: {
+          type: 'object',
+          required: ['vehicleId', 'driverId', 'startDate', 'startFuelLevel', 'startMileage'],
+          properties: {
+            vehicleId: { type: 'string', description: 'ObjectId references to Car id (Car model)' },
+            driverId: { type: 'string', description: 'ObjectId references to Driver id (Driver model)' },
+            startDate: { type: 'string', format: 'date-time' },
+            startFuelLevel: { type: 'number', minimum: 0 },
+            startMileage: { type: 'number', minimum: 0 },
+            finishDate: { type: 'string', format: 'date-time', nullable: true, example: null },
+            finishFuelLevel: { type: 'number', nullable: true, example: null},
+            finishMileage: { type: 'number', nullable: true, example: null },
+          }
         },
       },
     },

@@ -9,7 +9,7 @@ const {
   deleteCarByVin
 } = require('../services/car.service')
 
-// * GET /api/cars/in-use/low-fuel
+// * GET /cars/in-use/low-fuel
 // Cars currently in use with fuel level less than 1/4 of full tank
 exports.getCarsInUseLowFuel = async (req, res) => {
   try {
@@ -25,7 +25,7 @@ exports.getCarsInUseLowFuel = async (req, res) => {
   }
 };
 
-// * GET /api/cars/reserved/unauthorized-card
+// * GET /cars/reserved/unauthorized-card
 // Reserved cars whose driver card hasn't been authorized
 // Returns VIN, location, driver first/last name, license number
 exports.getReservedUnauthorizedCard = async (req, res) => {
@@ -42,11 +42,11 @@ exports.getReservedUnauthorizedCard = async (req, res) => {
   }
 };
 
-// * POST /api/cars
+// * POST /cars/add
 // Add a new car to the car sharing park
 exports.addCar = async (req, res) => {
   try {
-    const carData = { ...req.body, docType: 'Vehicle' };
+    const carData = { ...req.body };
     const saved = await addCar(carData);
     res.status(201).json(saved);
   } catch (err) {
@@ -54,7 +54,7 @@ exports.addCar = async (req, res) => {
   }
 };
 
-// * PUT /api/cars/service-old-or-high-mileage
+// * PUT /cars/service-old-or-high-mileage
 // Set status to "In Service" for cars produced before 01/01/2017 OR mileage > 100000 km
 exports.setInServiceOldOrHighMileage = async (req, res) => {
   try {
@@ -74,7 +74,7 @@ exports.setInServiceOldOrHighMileage = async (req, res) => {
   }
 };
 
-// * PUT /api/cars/relocate-frequent
+// * PUT /cars/relocate-frequent
 // Relocate cars booked more than 2 times that are not In use or Reserved to Minsk coordinates
 exports.relocateFrequentBookers = async (req, res) => {
   try {
@@ -95,7 +95,7 @@ exports.relocateFrequentBookers = async (req, res) => {
   }
 };
 
-// DELETE /api/cars/:vin
+// * DELETE /cars/delete/:vin
 // Remove a car by VIN
 exports.deleteCarByVin = async (req, res) => {
   try {

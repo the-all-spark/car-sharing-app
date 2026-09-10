@@ -6,14 +6,18 @@ const Booking = require('../models/booking.model');
 
 async function seedDatabase() {
   try {
-    // await Car.cleanIndexes();
-    await Car.deleteMany({});
 
-    // await Driver.cleanIndexes();
-    await Driver.deleteMany({});
+    // await Promise.all([
+    //   Car.cleanIndexes(),
+    //   Driver.cleanIndexes(),
+    //   Booking.cleanIndexes()
+    // ]);
 
-    // await Booking.cleanIndexes();
-    await Booking.deleteMany({});
+    await Promise.all([
+      Car.deleteMany({}),
+      Driver.deleteMany({}),
+      Booking.deleteMany({})
+    ]);
 
     const driversData = [
       {

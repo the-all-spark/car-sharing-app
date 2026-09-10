@@ -18,7 +18,7 @@ const carController = require('../controllers/car.controller');
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Vehicle'
+ *                 $ref: '#/components/schemas/Car'
  *       404:
  *         description: Not Found (no vehicles match the criteria)
  *         content:
@@ -92,14 +92,14 @@ router.get('/reserved/unauthorized-card', carController.getReservedUnauthorizedC
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Vehicle'
+ *             $ref: '#/components/schemas/Car'
  *     responses:
  *       201:
  *         description: Car created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Vehicle'
+ *               $ref: '#/components/schemas/Car'
  *       400:
  *         description: Invalid input
  */
@@ -193,7 +193,7 @@ router.put('/relocate-frequent', carController.relocateFrequentBookers);
 
 /**
  * @swagger
- * /cars/{vin}:
+ * /cars/delete/{vin}:
  *   delete:
  *     summary: Remove a car by its VIN number
  *     tags: [Cars]
@@ -241,6 +241,6 @@ router.put('/relocate-frequent', carController.relocateFrequentBookers);
  *                 message:
  *                   type: string
  */
-router.delete('/:vin', carController.deleteCarByVin);
+router.delete('/delete/:vin', carController.deleteCarByVin);
 
 module.exports = router;

@@ -39,11 +39,10 @@ async function start() {
   try {
     await connectDB();
 
-    const vehicleCount = await Car.countDocuments({ docType: 'Vehicle' });
+    const vehicleCount = await Car.countDocuments({});
 
     if (vehicleCount === 0) {
       console.log('No vehicles found in database. Running seeder...');
-      await Car.deleteMany({}); 
       await seedDatabase();
       console.log('Database successfully seeded!');
     } else {
