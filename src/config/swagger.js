@@ -33,9 +33,9 @@ const options = {
           type: 'object',
           required: ['number', 'owner', 'validThrough'],
           properties: {
-            number: { type: 'string' },
-            owner: { type: 'string' },
-            validThrough: { type: 'string', format: 'date-time' },
+            number: { type: 'string', example: '1234567891234567' },
+            owner: { type: 'string', example: 'firstName lastName' },
+            validThrough: { type: 'string', format: 'date-time', example: '2027-06-01' },
             authorized: { type: 'boolean', default: false },
           },
         },
@@ -43,7 +43,7 @@ const options = {
           type: 'object',
           required: ['licenseNumber', 'firstName', 'lastName', 'card'],
           properties: {
-            licenseNumber: { type: 'string' },
+            licenseNumber: { type: 'string', example: 'DL-100001', },
             firstName: { type: 'string' },
             lastName: { type: 'string' },
             card: { $ref: '#/components/schemas/Card' },
