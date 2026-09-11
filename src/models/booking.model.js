@@ -16,8 +16,4 @@ const bookingSchema = new Schema({
   finishMileage: { type: Number, default: null, min: 0 }, 
 });
 
-// Индексы для быстрого поиска истории по машине или водителю
-// bookingSchema.index({ vehicleId: 1, status: 1 });
-// bookingSchema.index({ driverId: 1, status: 1 });
-
 module.exports = mongoose.model('Booking', bookingSchema);

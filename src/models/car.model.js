@@ -37,10 +37,8 @@ const carSchema = new Schema(
     currentBookingId: { type: Schema.Types.ObjectId, ref: 'Booking', default: null },
     location: { 
       type: { type: String, enum: ['Point']},
-      // type: { type: String, enum: ['Point'], default: 'Point' },
       coordinates: {
         type: [Number],
-        //  required: true,
         validate: {
           validator: function(v) { return v && v.length === 2; },
           message: 'Coordinates must be [longitude, latitude]',

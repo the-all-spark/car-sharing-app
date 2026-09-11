@@ -45,7 +45,7 @@ router.get('/', bookingController.getBookings);
  * @swagger
  * /bookings/book/{vin}:
  *   post:
- *     summary: Book a car
+ *     summary: Book a car by its VIN
  *     tags: [Bookings]
  *     parameters:
  *       - in: path
@@ -70,13 +70,13 @@ router.get('/', bookingController.getBookings);
  *             properties:
  *               licenseNumber:
  *                 type: string
- *                 example: "DL-300001"
+ *                 example: "DL-700001"
  *               startFuel:
  *                 type: number
- *                 example: 55
+ *                 example: 100
  *               startMileage:
  *                 type: number
- *                 example: 123500
+ *                 example: 10500
  *     responses:
  *       201:
  *         description: Booking created successfully
@@ -103,7 +103,7 @@ router.post('/book/:vin', bookingController.bookCar);
  * @swagger
  * /bookings/unbook/{vin}:
  *   post:
- *     summary: Finish a car booking
+ *     summary: Unbook the car by its VIN (Finish the trip)
  *     tags: [Bookings]
  *     parameters:
  *       - in: path

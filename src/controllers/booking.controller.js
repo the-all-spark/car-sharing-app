@@ -7,7 +7,10 @@ const {
   getBookings,
   bookCar,
   unbookCar,
-} = require('../services/booking.service')
+} = require('../services/booking.service');
+const { getCarByVin } = require ('../services/car.service');
+const { getDriverByLicense } = require ('../services/driver.service');
+
 
 // * GET /bookings
 // Get all bookings
@@ -29,7 +32,7 @@ exports.getBookings = async (req, res) => {
 };
 
 // * POST /bookings/book/:vin
-// Book a car
+// Book the car by its VIN (create booking) 
 exports.bookCar = async (req, res) => {
   try {
     const carVin = req.params.vin.toUpperCase();
@@ -37,20 +40,22 @@ exports.bookCar = async (req, res) => {
     const startFuel = req.body.startFuel;
     const startMileage = req.body.startMileage;
 
-    // 1. Ищем машину по VIN
-    const car = await Car.findOne({ vin: carVin });
+    const car = await getCarByVin(carVin);
     if (!car) {
-      return res.status(404).json({ message: 'Автомобиль с таким VIN не найден' });
+      return res.status(404).json({ message: 'No car with such VIN was found' });
     }
 
-    // 2. Ищем водителя по номеру удостоверения
-    const driver = await Driver.findOne({ licenseNumber: driverLicenseNumber });
+    const driver = await getDriverByLicense(driverLicenseNumber);
     if (!driver) {
-      return res.status(404).json({ message: 'Водитель с таким номером лицензии не найден' });
+      return res.status(404).json({ message: 'No driver with such license number was found' });
     }
 
-    // 3. Передаем полученные ID в сервис
-    const booking = await bookCar(car._id, driver._id, startFuel, startMileage);
+    const booking = await bookCar({
+      vehicleId: car._id,
+      driverId: driver._id,
+      startFuel,
+      startMileage
+    });
     
     res.status(201).json(booking);
   } catch (err) {
@@ -59,7 +64,7 @@ exports.bookCar = async (req, res) => {
 };
 
 // * POST /bookings/unbook/:vin
-// Unbook a car
+// Unbook a car by its VIN (finish the trip) 
 exports.unbookCar = async (req, res) => {
   try {
     const carVin = req.params.vin.toUpperCase();
@@ -67,26 +72,28 @@ exports.unbookCar = async (req, res) => {
     const finishFuel = req.body.finishFuel;
     const finishMileage = req.body.finishMileage;
 
-    // 1. Ищем машину
-    const car = await Car.findOne({ vin: carVin });
+    const car = await getCarByVin(carVin);
     if (!car) {
-      return res.status(404).json({ message: 'Автомобиль с таким VIN не найден' });
+      return res.status(404).json({ message: 'No car with such VIN was found' });
     }
 
-    // Проверяем, занята ли вообще машина
     if (!car.currentBookingId) {
-      return res.status(400).json({ message: 'Этот автомобиль в данный момент не находится в поездке' });
+      return res.status(400).json({ message: 'This vehicle is not currently on a trip' });
     }
 
-    // 2. Ищем водителя
-    const driver = await Driver.findOne({ licenseNumber: driverLicenseNumber });
+    const driver = await getDriverByLicense(driverLicenseNumber);
     if (!driver) {
-      return res.status(404).json({ message: 'Водитель с таким номером лицензии не найден' });
+      return res.status(404).json({ message: 'No driver with such license number was found' });
     }
 
-    // 3. Вызываем сервис для завершения поездки
-    const updatedBooking = await unbookCar(car._id, driver._id, car.currentBookingId, finishFuel, finishMileage);
-    
+    const updatedBooking = await unbookCar({
+      vehicleId: car._id,
+      driverId: driver._id,
+      bookingId: car.currentBookingId,
+      finishFuel,
+      finishMileage
+    });
+
     res.status(200).json(updatedBooking);
   } catch (err) {
     res.status(400).json({ message: err.message });

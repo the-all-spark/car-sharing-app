@@ -6,12 +6,11 @@ const Booking = require('../models/booking.model');
 
 async function seedDatabase() {
   try {
-
-    // await Promise.all([
-    //   Car.cleanIndexes(),
-    //   Driver.cleanIndexes(),
-    //   Booking.cleanIndexes()
-    // ]);
+    await Promise.all([
+      Car.cleanIndexes(),
+      Driver.cleanIndexes(),
+      Booking.cleanIndexes()
+    ]);
 
     await Promise.all([
       Car.deleteMany({}),
@@ -82,13 +81,7 @@ async function seedDatabase() {
         status: 'In use',
         fuelLevel: 25,
         mileage: 124000,
-        currentBookingId: null, 
-        // currentRun: {
-        //   startDate: new Date('2026-08-20'),
-        //   driverId: getDriverId('DL-100001'),
-        //   startFuelLevel: 55,
-        //   startMileage: 123500,
-        // },
+        currentBookingId: null, // a current run will be here
         location: { type: 'Point', coordinates: [27.5611, 53.9023] }, 
       },
       {
@@ -102,13 +95,7 @@ async function seedDatabase() {
         status: 'Reserved',
         fuelLevel: 30,
         mileage: 41000,
-        currentBookingId: null,
-        // currentRun: {
-        //   startDate: new Date('2026-08-25'),
-        //   driverId: getDriverId('DL-100002'),
-        //   startFuelLevel: 47,
-        //   startMileage: 44900,
-        // },
+        currentBookingId: null, // a current run will be here
         location: { type: 'Point', coordinates: [27.5700, 53.9100] },
       },
       {
@@ -164,13 +151,7 @@ async function seedDatabase() {
         status: 'In use',
         fuelLevel: 10,
         mileage: 148000,
-        currentBookingId: null,
-        // currentRun: {
-        //   startDate: new Date('2026-08-31'),
-        //   driverId: getDriverId('DL-300001'),
-        //   startFuelLevel: 52,
-        //   startMileage: 147000,
-        // }, 
+        currentBookingId: null, // a current run will be here
         location: { type: 'Point', coordinates: [27.5600, 53.9050] },
       },
     ];
@@ -192,7 +173,7 @@ async function seedDatabase() {
 
     const bookingsData = [
       {
-        // * текущая для Toyota '1HGCM82633A123456'
+        // * Toyota (current)
         vehicleId: getVehicleId('1HGCM82633A123456'),
         driverId: getDriverId('DL-100001'),
         startDate: new Date('2026-08-20'),
@@ -203,7 +184,7 @@ async function seedDatabase() {
         finishMileage: null,
       },
       {
-        // прошлые для Toyota
+        // Toyota (previous)
         vehicleId: getVehicleId('1HGCM82633A123456'),
         driverId: getDriverId('DL-200001'),
         startDate: new Date('2026-06-01'),
@@ -214,7 +195,7 @@ async function seedDatabase() {
         finishMileage: 121000,
       }, 
       {
-        // прошлые для Toyota
+        // Toyota
         vehicleId: getVehicleId('1HGCM82633A123456'),
         driverId: getDriverId('DL-200002'),
         startDate: new Date('2026-07-01'),
@@ -225,7 +206,7 @@ async function seedDatabase() {
         finishMileage: 123500,
       }, 
       {
-        // * Текущая для Honda '2T1BURHE0JC012345'
+        // * Honda
         vehicleId: getVehicleId('2T1BURHE0JC012345'),
         driverId: getDriverId('DL-100002'),
         startDate: new Date('2026-08-25'),
@@ -236,7 +217,7 @@ async function seedDatabase() {
         finishMileage: null,
       }, 
       {
-        // Прошлые для Honda
+        // Honda
         vehicleId: getVehicleId('2T1BURHE0JC012345'),
         driverId: getDriverId('DL-300001'),
         startDate: new Date('2026-05-01'),
@@ -247,7 +228,7 @@ async function seedDatabase() {
         finishMileage: 41000,
       },
       {
-        // * Прошлые для Volkswagen '3VWLL7AJ0AM034567' (! текущей нет)
+        // * Volkswagen
         vehicleId: getVehicleId('3VWLL7AJ0AM034567'),
         driverId: getDriverId('DL-100001'),
         startDate: new Date('2026-07-15'),
@@ -258,7 +239,7 @@ async function seedDatabase() {
         finishMileage: 62000,
       },
       {
-        // * Прошлые для BMW '4T3ZK3BB0NU056789' (! текущей нет)
+        // * BMW
         vehicleId: getVehicleId('4T3ZK3BB0NU056789'),
         driverId: getDriverId('DL-500001'),
         startDate: new Date('2026-03-01'),
@@ -269,7 +250,7 @@ async function seedDatabase() {
         finishMileage: 26000,
       }, 
       {
-        // Прошлые для BMW '4T3ZK3BB0NU056789'
+        // BMW
         vehicleId: getVehicleId('4T3ZK3BB0NU056789'),
         driverId: getDriverId('DL-500002'),
         startDate: new Date('2026-04-10'),
@@ -280,7 +261,7 @@ async function seedDatabase() {
         finishMileage: 27500,
       },
       {
-        // Прошлые для BMW '4T3ZK3BB0NU056789'
+        // BMW
         vehicleId: getVehicleId('4T3ZK3BB0NU056789'),
         driverId: getDriverId('DL-500002'),
         startDate: new Date('2026-05-12'),
@@ -291,7 +272,7 @@ async function seedDatabase() {
         finishMileage: 33000,
       },
       {
-        // * Прошлые для Tesla '5YJSA1E26HF078901' (! текущей нет)
+        // * Tesla
         vehicleId: getVehicleId('5YJSA1E26HF078901'),
         driverId: getDriverId('DL-600001'),
         startDate: new Date('2026-02-01'),
@@ -302,7 +283,7 @@ async function seedDatabase() {
         finishMileage: 56000,
       },
       {
-        // * Текущая для Ford '6FNYF4900PB901234'
+        // * Ford
         vehicleId: getVehicleId('6FNYF4900PB901234'),
         driverId: getDriverId('DL-300001'),
         startDate: new Date('2026-08-31'),
@@ -313,7 +294,7 @@ async function seedDatabase() {
         finishMileage: null,
       },
       {
-        // Прошлые для  Ford '6FNYF4900PB901234'
+        // Ford
         vehicleId: getVehicleId('6FNYF4900PB901234'),
         driverId: getDriverId('DL-600001'),
         startDate: new Date('2026-01-15'),
@@ -324,7 +305,7 @@ async function seedDatabase() {
         finishMileage: 146000,
       },
       {
-        // Прошлые для  Ford '6FNYF4900PB901234'
+        // Ford
         vehicleId: getVehicleId('6FNYF4900PB901234'),
         driverId: getDriverId('DL-500002'),
         startDate: new Date('2026-02-20'),
@@ -335,7 +316,7 @@ async function seedDatabase() {
         finishMileage: 146500,
       },
       {
-        // Прошлые для  Ford '6FNYF4900PB901234'
+        // Ford
         vehicleId: getVehicleId('6FNYF4900PB901234'),
         driverId: getDriverId('DL-100001'),
         startDate: new Date('2026-04-05'),
@@ -347,12 +328,9 @@ async function seedDatabase() {
       }
     ];
 
-    const savedBookings = await Booking.insertMany(bookingsData); // --> vehicleId и _id поездки
-
-    // 1. Отбираем только активные поездки из сохраненного массива
+    const savedBookings = await Booking.insertMany(bookingsData);
     const activeBookings = savedBookings.filter(b => b.finishDate === null);
 
-    // 2. Обновляем каждую машину, привязывая ID поездки
     for (const booking of activeBookings) {
       await Car.updateOne(
         { _id: booking.vehicleId },

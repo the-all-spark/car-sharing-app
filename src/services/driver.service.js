@@ -5,6 +5,11 @@ const getDrivers = async () => {
   return await Driver.find({});
 };
 
+// Get driver by license number
+const getDriverByLicense = async (driverLicenseNumber) => {
+  return await Driver.findOne({ licenseNumber: driverLicenseNumber });
+};
+
 // * Add a new driver
 const addDriver = async (driverData) => {
   const driver = new Driver(driverData);
@@ -29,6 +34,7 @@ const deleteDriverByLicense = async (driverLicense) => {
 
 module.exports = {
   getDrivers,
+  getDriverByLicense,
   addDriver,
   updateDriverByLicense,
   deleteDriverByLicense,

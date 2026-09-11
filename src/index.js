@@ -1,5 +1,10 @@
 const http = require('http');
+const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const dotenv = require('dotenv');
+
 const connectDB = require('./config/db');
+const swaggerSpec = require('./config/swagger');
 
 const Car = require('./models/car.model');
 
@@ -9,12 +14,6 @@ const bookingRoutes = require('./routes/booking.route');
 
 const seedDatabase = require('./seed/seed');
 
-const express = require('express');
-
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./config/swagger');
-
-const dotenv = require('dotenv');
 dotenv.config();
 
 // API configuration: routes, data parsing, automatic Swagger documentation
