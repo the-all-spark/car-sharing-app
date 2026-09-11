@@ -32,6 +32,11 @@ Swagger UI by default is available on http://localhost:3000/api-docs
    
 ## API Endpoints
 
+### Cars
+
+* `GET /api/cars`  
+Get all cars.
+
 * `GET /api/cars/in-use/low-fuel`  
 Retrieves a list of all cars currently marked as 'In use' with a fuel level less than 1/4 of full tank.
 
@@ -39,9 +44,12 @@ Retrieves a list of all cars currently marked as 'In use' with a fuel level less
 Retrieves all cars that are 'Reserved' but the driver's credit/debit card hasn't been authorized.  
 Returns: VIN, location, driver's first/last name, and driver's license number.
 
-* `POST /api/cars`  
+* `POST /api/cars/add`  
 Adds a new car to the car sharing park.
 Request body includes required fields: vin, registrationNumber, productionInfo.
+
+* `PATCH /api/cars/update/:vin`  
+Update a car by its VIN number.
 
 * `PUT /api/cars/service-old-or-high-mileage`  
 Set status to 'In Service' for any vehicle that meets _one of_ condition:
@@ -54,5 +62,30 @@ Updates the location of vehicles that meet _both_ condition:
   * and are neither 'In use' nor 'Reserved'.  
 Sets location coordinates to: { longitude: 27.5442615, latitude: 53.8882836 }
 
-* `DELETE /api/cars/:vin`   
+* `DELETE /api/cars/delete/:vin`   
 Removes a specific car from the database using its VIN (Vehicle Identification Number).
+
+### Drivers
+
+* `GET /api/drivers`  
+Get all drivers.
+
+* `POST /api/drivers/add`  
+Add a new driver.
+
+* `PATCH /api/update/:licenseNumber`  
+Update a driver by licenseNumber.
+
+* `DELETE /api/cars/delete/:licenseNumber`   
+Remove a driver by license number.
+
+### Bookings
+
+* `GET /api/bookings`  
+Get all bookings.
+
+* `POST /api/bookings/book/:vin`  
+Book a car by its VIN.
+
+* `POST /api/bookings/unbook/:vin`  
+Unbook the car by its VIN (Finish the trip).
