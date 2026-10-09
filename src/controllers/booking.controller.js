@@ -1,8 +1,5 @@
 // * Route Handlers
 
-const Car = require('../models/car.model');
-const Driver = require('../models/driver.model');
-
 const { 
   getBookings,
   bookCar,
@@ -10,7 +7,6 @@ const {
 } = require('../services/booking.service');
 const { getCarByVin } = require ('../services/car.service');
 const { getDriverByLicense } = require ('../services/driver.service');
-
 
 // * GET /bookings
 // Get all bookings

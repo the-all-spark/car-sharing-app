@@ -13,18 +13,24 @@ Make sure you have [Docker Desktop](https://docs.docker.com/get-docker/) install
 
 1. Clone the repository and navigate to the project root:
    
-    `git clone https://github.com/the-all-spark/car-sharing-app.git`  
+    `git clone https://github.com/the-all-spark/car-sharing-app.git`
+
     `cd car-sharing-app`  
    
-2. Start the application using Docker Compose:
+2. Create `.env` file in the root of project and fill it with data (according to `.env.example` file)
    
-    `docker compose up --build`  
+3. Start the application using Docker Compose:
+   
+    `docker compose up -d --build`  
     
     This command spins up the Node.js application server and a MongoDB instance automatically.
 
-3. Stop the application:
+4. Stop the application:
    
     `docker compose down`
+
+To check logs use the following command:  
+`docker compose logs -f api`
 
 ## Swagger
 
@@ -85,7 +91,7 @@ Remove a driver by license number.
 Get all bookings.
 
 * `POST /api/bookings/book/:vin`  
-Book a car by its VIN.
+Book the car by its VIN (create booking).
 
 * `POST /api/bookings/unbook/:vin`  
-Unbook the car by its VIN (Finish the trip).
+Unbook the car by its VIN (finish the trip).

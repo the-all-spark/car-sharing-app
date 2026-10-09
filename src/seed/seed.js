@@ -95,7 +95,7 @@ async function seedDatabase() {
         status: 'Reserved',
         fuelLevel: 30,
         mileage: 41000,
-        currentBookingId: null, // a current run will be here
+        currentBookingId: null,
         location: { type: 'Point', coordinates: [27.5700, 53.9100] },
       },
       {
@@ -151,7 +151,7 @@ async function seedDatabase() {
         status: 'In use',
         fuelLevel: 10,
         mileage: 148000,
-        currentBookingId: null, // a current run will be here
+        currentBookingId: null,
         location: { type: 'Point', coordinates: [27.5600, 53.9050] },
       },
     ];
@@ -159,13 +159,11 @@ async function seedDatabase() {
     const savedCars = await Car.insertMany(vehiclesData);
     const savedDrivers = await Driver.insertMany(driversData);
 
-    // * Get driverID by license
     const getDriverId = (license) => {
       const driver = savedDrivers.find(d => d.licenseNumber === license);
       return driver ? driver._id : null;
     };
 
-    // * Get vehicleId by vin
     const getVehicleId = (vin) => {
       const car = savedCars.find(c => c.vin === vin.toUpperCase());
       return car ? car._id : null;
@@ -173,7 +171,6 @@ async function seedDatabase() {
 
     const bookingsData = [
       {
-        // * Toyota (current)
         vehicleId: getVehicleId('1HGCM82633A123456'),
         driverId: getDriverId('DL-100001'),
         startDate: new Date('2026-08-20'),
@@ -184,7 +181,6 @@ async function seedDatabase() {
         finishMileage: null,
       },
       {
-        // Toyota (previous)
         vehicleId: getVehicleId('1HGCM82633A123456'),
         driverId: getDriverId('DL-200001'),
         startDate: new Date('2026-06-01'),
@@ -195,7 +191,6 @@ async function seedDatabase() {
         finishMileage: 121000,
       }, 
       {
-        // Toyota
         vehicleId: getVehicleId('1HGCM82633A123456'),
         driverId: getDriverId('DL-200002'),
         startDate: new Date('2026-07-01'),
@@ -206,7 +201,6 @@ async function seedDatabase() {
         finishMileage: 123500,
       }, 
       {
-        // * Honda
         vehicleId: getVehicleId('2T1BURHE0JC012345'),
         driverId: getDriverId('DL-100002'),
         startDate: new Date('2026-08-25'),
@@ -217,7 +211,6 @@ async function seedDatabase() {
         finishMileage: null,
       }, 
       {
-        // Honda
         vehicleId: getVehicleId('2T1BURHE0JC012345'),
         driverId: getDriverId('DL-300001'),
         startDate: new Date('2026-05-01'),
@@ -228,7 +221,6 @@ async function seedDatabase() {
         finishMileage: 41000,
       },
       {
-        // * Volkswagen
         vehicleId: getVehicleId('3VWLL7AJ0AM034567'),
         driverId: getDriverId('DL-100001'),
         startDate: new Date('2026-07-15'),
@@ -239,7 +231,6 @@ async function seedDatabase() {
         finishMileage: 62000,
       },
       {
-        // * BMW
         vehicleId: getVehicleId('4T3ZK3BB0NU056789'),
         driverId: getDriverId('DL-500001'),
         startDate: new Date('2026-03-01'),
@@ -250,7 +241,6 @@ async function seedDatabase() {
         finishMileage: 26000,
       }, 
       {
-        // BMW
         vehicleId: getVehicleId('4T3ZK3BB0NU056789'),
         driverId: getDriverId('DL-500002'),
         startDate: new Date('2026-04-10'),
@@ -261,7 +251,6 @@ async function seedDatabase() {
         finishMileage: 27500,
       },
       {
-        // BMW
         vehicleId: getVehicleId('4T3ZK3BB0NU056789'),
         driverId: getDriverId('DL-500002'),
         startDate: new Date('2026-05-12'),
@@ -272,7 +261,6 @@ async function seedDatabase() {
         finishMileage: 33000,
       },
       {
-        // * Tesla
         vehicleId: getVehicleId('5YJSA1E26HF078901'),
         driverId: getDriverId('DL-600001'),
         startDate: new Date('2026-02-01'),
@@ -283,7 +271,6 @@ async function seedDatabase() {
         finishMileage: 56000,
       },
       {
-        // * Ford
         vehicleId: getVehicleId('6FNYF4900PB901234'),
         driverId: getDriverId('DL-300001'),
         startDate: new Date('2026-08-31'),
@@ -294,7 +281,6 @@ async function seedDatabase() {
         finishMileage: null,
       },
       {
-        // Ford
         vehicleId: getVehicleId('6FNYF4900PB901234'),
         driverId: getDriverId('DL-600001'),
         startDate: new Date('2026-01-15'),
@@ -305,7 +291,6 @@ async function seedDatabase() {
         finishMileage: 146000,
       },
       {
-        // Ford
         vehicleId: getVehicleId('6FNYF4900PB901234'),
         driverId: getDriverId('DL-500002'),
         startDate: new Date('2026-02-20'),
@@ -316,7 +301,6 @@ async function seedDatabase() {
         finishMileage: 146500,
       },
       {
-        // Ford
         vehicleId: getVehicleId('6FNYF4900PB901234'),
         driverId: getDriverId('DL-100001'),
         startDate: new Date('2026-04-05'),

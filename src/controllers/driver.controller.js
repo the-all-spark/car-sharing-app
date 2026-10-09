@@ -26,7 +26,7 @@ exports.getDrivers = async (req, res) => {
   }
 };
 
-// * POST /drivers/add
+// * POST /drivers
 // Add a new driver
 exports.addDriver = async (req, res) => {
   try {
@@ -38,7 +38,7 @@ exports.addDriver = async (req, res) => {
   }
 };
 
-// * PATCH /drivers/update/:licenseNumber
+// * PATCH /drivers/:licenseNumber
 // Update a driver by licenseNumber
 exports.updateDriverByLicense = async (req, res) => {
   try {
@@ -66,7 +66,7 @@ exports.updateDriverByLicense = async (req, res) => {
   }
 };
 
-// * DELETE /drivers/delete/:licenseNumber
+// * DELETE /drivers/:licenseNumber
 // Remove a driver by license number
 exports.deleteDriverByLicense = async (req, res) => {
   try {

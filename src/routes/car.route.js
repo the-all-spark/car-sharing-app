@@ -120,7 +120,7 @@ router.get('/reserved/unauthorized-card', carController.getReservedUnauthorizedC
 
 /**
  * @swagger
- * /cars/add:
+ * /cars:
  *   post:
  *     summary: Add a new car to the car sharing park
  *     tags: [Cars]
@@ -140,82 +140,7 @@ router.get('/reserved/unauthorized-card', carController.getReservedUnauthorizedC
  *       400:
  *         description: Invalid input
  */
-router.post('/add', carController.addCar);
-
-/**
- * @swagger
- * /cars/update/{vin}:
- *   patch:
- *     summary: Update a car by its VIN number (Partial update)
- *     tags: [Cars]
- *     parameters:
- *       - in: path
- *         name: vin
- *         required: true
- *         schema:
- *           type: string
- *           minLength: 17
- *           maxLength: 17
- *           example: "6FNYF4900PB901234"
- *         description: The 17-character Vehicle Identification Number (case-insensitive)
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Car'
- *           example:
- *             registrationNumber: ""
- *             status: "Free"
- *             fuelLevel: 100
- *             mileage: 50000
- *             location:
- *               type: "Point"
- *               coordinates: [27.5443, 53.8883]
- *     responses:
- *       200:
- *         description: Car successfully updated. Returns the updated object.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Car updated"
- *                 car:
- *                   $ref: '#/components/schemas/Car'
- *       400:
- *         description: Bad Request (e.g. trying to update read-only fields or invalid data)
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Bad Request"
- *       404:
- *         description: Car not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Car not found"
- *       500:
- *         description: Internal Server Error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- */
-router.patch('/update/:vin', carController.updateCarByVin);
+router.post('/', carController.addCar);
 
 /**
  * @swagger
@@ -305,7 +230,82 @@ router.put('/relocate-frequent', carController.relocateFrequentBookers);
 
 /**
  * @swagger
- * /cars/delete/{vin}:
+ * /cars/{vin}:
+ *   patch:
+ *     summary: Update a car by its VIN number (Partial update)
+ *     tags: [Cars]
+ *     parameters:
+ *       - in: path
+ *         name: vin
+ *         required: true
+ *         schema:
+ *           type: string
+ *           minLength: 17
+ *           maxLength: 17
+ *           example: "6FNYF4900PB901234"
+ *         description: The 17-character Vehicle Identification Number (case-insensitive)
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Car'
+ *           example:
+ *             registrationNumber: ""
+ *             status: "Free"
+ *             fuelLevel: 100
+ *             mileage: 50000
+ *             location:
+ *               type: "Point"
+ *               coordinates: [27.5443, 53.8883]
+ *     responses:
+ *       200:
+ *         description: Car successfully updated. Returns the updated object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Car updated"
+ *                 car:
+ *                   $ref: '#/components/schemas/Car'
+ *       400:
+ *         description: Bad Request (e.g. trying to update read-only fields or invalid data)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Bad Request"
+ *       404:
+ *         description: Car not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Car not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+router.patch('/:vin', carController.updateCarByVin);
+
+/**
+ * @swagger
+ * /cars/{vin}:
  *   delete:
  *     summary: Remove a car by its VIN number
  *     tags: [Cars]
@@ -353,6 +353,6 @@ router.put('/relocate-frequent', carController.relocateFrequentBookers);
  *                 message:
  *                   type: string
  */
-router.delete('/delete/:vin', carController.deleteCarByVin);
+router.delete('/:vin', carController.deleteCarByVin);
 
 module.exports = router;

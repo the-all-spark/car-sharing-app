@@ -43,7 +43,7 @@ router.get('/', driverController.getDrivers);
 
 /**
  * @swagger
- * /drivers/add:
+ * /drivers:
  *   post:
  *     summary: Add a new driver
  *     tags: [Drivers]
@@ -63,11 +63,11 @@ router.get('/', driverController.getDrivers);
  *       400:
  *         description: Invalid input
  */
-router.post('/add', driverController.addDriver);
+router.post('/', driverController.addDriver);
 
 /**
  * @swagger
- * /drivers/update/{licenseNumber}:
+ * /drivers/{licenseNumber}:
  *   patch:
  *     summary: Update a driver by licenseNumber (Partial update)
  *     tags: [Drivers]
@@ -135,11 +135,11 @@ router.post('/add', driverController.addDriver);
  *                 message:
  *                   type: string
  */
-router.patch('/update/:licenseNumber', driverController.updateDriverByLicense);
+router.patch('/:licenseNumber', driverController.updateDriverByLicense);
 
 /**
  * @swagger
- * /drivers/delete/{licenseNumber}:
+ * /drivers/{licenseNumber}:
  *   delete:
  *     summary: Remove a driver by license number
  *     tags: [Drivers]
@@ -184,6 +184,6 @@ router.patch('/update/:licenseNumber', driverController.updateDriverByLicense);
  *                 message:
  *                   type: string
  */
-router.delete('/delete/:licenseNumber', driverController.deleteDriverByLicense);
+router.delete('/:licenseNumber', driverController.deleteDriverByLicense);
 
 module.exports = router;

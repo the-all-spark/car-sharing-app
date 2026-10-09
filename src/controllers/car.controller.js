@@ -1,4 +1,4 @@
-// *Route Handlers
+// * Route Handlers
 
 const { 
   getCars,
@@ -48,7 +48,6 @@ exports.getCarsInUseLowFuel = async (req, res) => {
 
 // * GET /cars/reserved/unauthorized-card
 // Reserved cars whose driver card hasn't been authorized
-// Returns VIN, location, driver first/last name, license number
 exports.getReservedUnauthorizedCard = async (req, res) => {
   try {
     const cars = await getReservedUnauthorizedCard();
@@ -63,7 +62,7 @@ exports.getReservedUnauthorizedCard = async (req, res) => {
   }
 };
 
-// * POST /cars/add
+// * POST /cars
 // Add a new car to the car sharing park
 exports.addCar = async (req, res) => {
   try {
@@ -72,34 +71,6 @@ exports.addCar = async (req, res) => {
     res.status(201).json(saved);
   } catch (err) {
     res.status(400).json({ message: err.message });
-  }
-};
-
-// * PATCH /cars/update/:vin
-// Update a car by VIN
-exports.updateCarByVin = async (req, res) => {
-  try {
-    const carVin = req.params.vin.toUpperCase();
-    const { vin, currentBookingId, ...incomingData } = req.body; 
-
-    const carData = Object.fromEntries(
-      Object.entries(incomingData).filter(([_, value]) => {
-        return value !== "" && value !== null && value !== undefined;
-      })
-    );
-
-    if (Object.keys(carData).length === 0) {
-      return res.status(400).json({ message: 'No valid fields provided for update' });
-    }
-
-    const updated = await updateCarByVin(carVin, carData);
-    if (!updated) {
-      return res.status(404).json({ message: 'Car not found' });
-    }
-    
-    res.status(200).json({ message: 'Car updated', car: updated });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
   }
 };
 
@@ -144,7 +115,35 @@ exports.relocateFrequentBookers = async (req, res) => {
   }
 };
 
-// * DELETE /cars/delete/:vin
+// * PATCH /cars/:vin
+// Update a car by VIN
+exports.updateCarByVin = async (req, res) => {
+  try {
+    const carVin = req.params.vin.toUpperCase();
+    const { vin, currentBookingId, ...incomingData } = req.body; 
+
+    const carData = Object.fromEntries(
+      Object.entries(incomingData).filter(([_, value]) => {
+        return value !== "" && value !== null && value !== undefined;
+      })
+    );
+
+    if (Object.keys(carData).length === 0) {
+      return res.status(400).json({ message: 'No valid fields provided for update' });
+    }
+
+    const updated = await updateCarByVin(carVin, carData);
+    if (!updated) {
+      return res.status(404).json({ message: 'Car not found' });
+    }
+    
+    res.status(200).json({ message: 'Car updated', car: updated });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// * DELETE /cars/:vin
 // Remove a car by VIN
 exports.deleteCarByVin = async (req, res) => {
   try {

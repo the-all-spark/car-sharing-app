@@ -1,12 +1,10 @@
 const Booking = require('../models/booking.model');
 const Car = require('../models/car.model');
 
-// * Get all bookings
 const getBookings = async () => {
   return await Booking.find({});
 };
 
-// * Book the car (create booking)
 const bookCar = async ({ vehicleId, driverId, startFuel, startMileage }) => {
   let newBooking = null;
   try {
@@ -45,7 +43,6 @@ const bookCar = async ({ vehicleId, driverId, startFuel, startMileage }) => {
   }
 }
 
-// * Unbook car (Finish the trip)
 const unbookCar = async ({ vehicleId, driverId, bookingId, finishFuel, finishMileage }) => {
   try {
     const booking = await Booking.findOne({

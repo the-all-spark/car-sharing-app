@@ -16,7 +16,7 @@ const seedDatabase = require('./seed/seed');
 
 dotenv.config();
 
-// API configuration: routes, data parsing, automatic Swagger documentation
+// API configuration: data parsing, routes, automatic Swagger documentation
 const app = express();
 
 app.use(express.json());

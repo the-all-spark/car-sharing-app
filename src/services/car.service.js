@@ -1,17 +1,14 @@
 const Car = require('../models/car.model');
 const Booking = require('../models/booking.model');
 
-// * Get all cars
 const getCars = async () => {
   return await Car.find({});
 };
 
-// Get car by VIN
 const getCarByVin = async (carVin) => {
   return await Car.findOne({ vin: carVin });
 };
 
-// * Cars currently in use with fuel level less than 1/4 of full tank
 const getCarsInUseLowFuel = async () => {
   return await Car.find({
     status: 'In use',
@@ -19,7 +16,6 @@ const getCarsInUseLowFuel = async () => {
   });
 }
 
-// * Reserved cars whose driver card hasn't been authorized
 const getReservedUnauthorizedCard = async () => {
   return await Car.aggregate([
       {
@@ -65,13 +61,11 @@ const getReservedUnauthorizedCard = async () => {
     ]);
 }
 
-// * Add a new car
 const addCar = async (carData) => {
   const car = new Car(carData);
   return await car.save();
 }
 
-// * Update a car by VIN
 const updateCarByVin = async (carVin, carData) => {
   return await Car.findOneAndUpdate(
     { vin: carVin },
@@ -80,7 +74,6 @@ const updateCarByVin = async (carVin, carData) => {
   );
 }
 
-// * Set status to "In Service" for cars produced before 01/01/2017 OR mileage > 100000 km
 const setInServiceOldOrHighMileage = async () => {
   return await Car.updateMany(
       {
@@ -95,7 +88,6 @@ const setInServiceOldOrHighMileage = async () => {
     );
 }
 
-// * Relocate cars booked more than 2 times that are not 'In use' or 'Reserved' to Minsk coordinates
 const relocateFrequentBookers = async () => {
   const carsToRelocate = await Booking.aggregate([
     {
@@ -146,7 +138,6 @@ const relocateFrequentBookers = async () => {
   }
 };
 
-// * Remove a car by VIN
 const deleteCarByVin = async (carVin) => {
   return await Car.findOneAndDelete({ 
     vin: carVin
